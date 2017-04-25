@@ -604,3 +604,46 @@ avalon.filters.myfilter = function(str, args, args2){//str为管道符之前计�
     }
 ```
 
+### 回调
+
+1. data-include-loaded，用于ms-include-src绑定，模板加载后触发，可以在这里修改模板
+参数: tmpl，vmodel1, vmodel2 ...
+2. data-include-rendered，用于ms-include, ms-include-src绑定，模板渲染好后触发；
+没参数
+3. data-repeat-rendered，用ms-repeat绑定，当监控数组发生添加，删除，重排等操作时触发；
+参数：当前操作名（"add","del","move","append"）
+4. data-with-sorted，用ms-repeat, ms-with绑定，赶对象渲染之前触发，要求输出一个字符串数组，对象的键值对会根据它依次输出；
+参数：原对象的所有键名构成的数组
+5. data-with-rendered，用ms-with绑定，当目标对象输出页面后触发；
+参数：当前操作名（"append"）
+6. data-each-rendered，用ms-each绑定，当监控数组发生添加，删除，重排等操作时触发；
+参数：当前操作名（"add","del","move"）
+
+
+### 拦截器
+
+拦截器是avalon在构建ms-duplex过程中,逐渐形成的一种增强机制,最初是用于数据类型转换. 
+否则我们的数据在VM中无法是数字或布尔,都会统统变成字符串.于是在ms-duplex后面加一点修饰, 
+让从表单元素获取的value值还原成我们之前的数据类型.
+
+`ms-duplex-string`
+这是最简单的拦截器，因为我们从表单元素上取出来，就是字符串类型。它通常用于text, textarea, select, password等元素。
+
+* 我们可以简单地将除了radio, checkbox外的表单元素上的ms-duplex当成ms-duplex-string。
+
+`ms-duplex-checked`
+许多场合，我们的radio, checkbox并非用于上传数据，而是用于切换某个状态值，将true变成false或将false变成true，这个拦截器就发挥作用了。
+
+它会将当前元素的checked属性值同步到VM的属性上，而checked属性无异乎上两个，true或false!
+
+* 在duplex1.0中，我们默认radio的ms-duplex就相当于ms-duplex-checked，duplex2.0为了兼容旧版还是这样干，但建议直接使用ms-duplex-checked。
+
+`ms-duplex-boolean`
+ms-duplex-boolean与ms-duplex-checked很相似，但它是将表单元素的value值转换为布尔。它的转换规则很简单， 如果值为"true"，那么转换为true,其他统统转换成false.
+
+`ms-duplex-number`
+将表单元素的value转换为数字, 不过转换规则比较复杂(这来源于现实中的业务需求,必须满足!), 因此在1.4.1中, 添加data-duplex-number辅助指令
+
+* 如果它等于strong时,那么input.value的值为数字时就转换为数字，否则转换为0， 包括什么也不填时也转换为0
+* 如果它等于medium时,那么input.value的值为数字时就转换为数字，如果没有填时，就不转换，其他情况转换为0。 这也是默认情况，如果你也没有设置data-duplex-number，就默认为medium。
+* 如果它等于weak时,那么input.value的值为数字时就转换为数字，否则就不进行转换
