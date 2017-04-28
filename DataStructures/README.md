@@ -119,4 +119,64 @@ var sum = nums.reduce(add)
 
 //reduceRight() 与reduce()类似，但是顺序相反（从右往左）
 
+//生成新数组的迭代器
+
+//map() 与forEach类似，对数组中的每个元素使用某个函数，两者的区别是map() 返回一个新的数组，该数组的元素是对原有元素应用某个函数得到的结果
+function curve(grade){
+	return grade += 5
+}
+var grades = [77, 54, 23]
+var newgrades = grade.map(curve)
+
+function first(word){
+	return word[0]
+}
+
+var words = ['for','you','information']
+var acronym = words.map(first)
+acronym.join('') //传入空参处理数组中的逗号
+
+//filter() 与every类似，传入一个返回值为布尔类型的参数，返回一个新数组包含应用该函数后结果为true的元素
+function isEven(num){
+	return num % 2 === 0
+}
+
+var nums = [1,2,3,4,5]
+var even = nums.filter(isEven)
+
+function after(str){
+	if(str.indexOf('cle') > -1){
+		return truen
+	}
+	return false
+}
+
+var words = ['sdfcew','clessdfs','regrecle']
+var misspelled = words.filter(after)
+
+
+// 创建二维数组
+
+// 如果直接在数组内部新增新的数组，那么数组中的每个元素都是undefined的，最好的方式遵照JavaScript:The Good Parts一书中的例子。
+通过扩展JavaScript数组对象，增加一个新方法，根据传入数组行数，列数，和初始值。（构建矩阵数组）
+
+Array.matrix = function(numrows, numcols, initial){
+	var arr = []
+	for( var i=0; i<numrows; i++ ){
+		var columns = []
+		for( var j=0; j<numcols; j++ ){
+			columns[j] = initial
+		}
+		arr[i] = columns
+	}
+	return arr
+}
+
+// 对于小规模的数据，这是创建二维数组的最简单方法
+
+// 处理二维数组的元素
+
+var grades = [[87, 77, 45]]
+
 ```
+
