@@ -176,7 +176,262 @@ Array.matrix = function(numrows, numcols, initial){
 
 // 处理二维数组的元素
 
-var grades = [[87, 77, 45]]
+var grades = [[87, 77, 45],[42,245,78],[67,34,22]]
+var total = 0
+var average = 0.0
+for(var row = 0; row < grades.length; row++){
+	for(var col = 0; col < grades[row].length; col++){
+		total += grades[row][col]
+	}
+	//外层对应行，内层对应列
+	average = total / grades[row].length
+	console.log(average)
+	average = 0.0
+	total = 0
+}
+
+var grades = [[87, 77, 45],[42,245,78],[67,34,22]]
+var total = 0
+var average = 0.0
+for(var col = 0; col < grades.length; col++){
+	for(var row = 0; row < grades[row].length; row++){
+		total += grades[row][col]
+	}
+	//外层对应列，内层对应行，相当于将原数组旋转90度
+	average = total / grades[col].length
+	console.log(average)
+	average = 0.0
+	total = 0
+}
+
+//一般可应用于矩阵的数据读取操作
+//以上操作对于参差不齐的数组同样适用
+
+// 对象中的数组
+
+function weekTemps() {
+	this.dataStore = []
+	this.add = add
+	this.average = average
+}
+
+function add(temp){
+	this.dataStore.push(temp)
+}
+
+function average(){
+	var total = 0.0
+	for(var i=0; i<this.dataStore.length; i++){
+		total += this.dataStore[i]
+	}
+	return total / this.dataStore.length
+}
+
+var thisWeek = new weekTemps()
+thisWeek.add(1)
+thisWeek.add(2)
+console.log(thisWeek.average())
 
 ```
+
+# 列表
+
+列表的抽象数据类型定义
+* listSize(property) 列表元素的个数
+* pos(property) 列表当前位置
+* length(property) 返回列表中元素的个数
+* clear(method) 清空列表中的所有元素
+* toString(method) 返回列表的字符串形式
+* getElement(method) 返回当前位置的元素
+* insert(method) 在现有元素后当中插入新元素
+* append(method) 在列表的末尾添加新元素
+* remove(method) 从列表中删除元素
+* front(method) 将列表的当前位置设移动到第一个元素
+* end(method) 将列表的当前位置移动到最后一个元素
+* prev(method) 将当前位置后移一位
+* next(method) 将当前位置前移一位
+* currPos(method) 返回列表的当前位置
+* moveTo(method) 将当前位置移动到指定位置
+
+实例：
+
+```
+function List() {
+	this.listSize = 0
+	this.pos = 0
+	this.dataStore = [] //初始化一个空数组来保存列表元素
+	this.clear = clear
+	this.find = find
+	this.toString = toString
+	
+	...等定义的方法
+
+}
+
+//以下为基础方法实现
+
+function append(element){
+	this.dataStore[this.listSize++] = element
+}
+
+function find(element){
+	for(var i=0;i<this.dataStore.length; i++){
+		if(this.dataStore[i] ==  element){
+			return i;
+		}
+	}
+}
+
+```
+# 栈
+
+栈的操作主要有两种：
+1. 将一个元素压入栈（push）和将一个元素弹出栈(pop)
+2. 预览栈顶元素（peek）
+
+```
+
+function Stack(){
+	this.dataStore = [];
+	this.top = 0;
+	this.push = push;
+	this.pop = pop;
+	this.peek = peek;
+}
+
+function push(element){
+	this.dataStore[this.top++] = element;
+}
+
+function pop(){
+	return this.dataStore[--this.top];
+}
+
+function peek(){
+	return this.dataStore[this.top-1];
+}
+
+// 返回其长度
+function length(){
+	return this.top;
+}
+
+function clear(){
+	return this.top = 0;
+}
+
+```
+
+
+实例1：将数字转换为2进制和8进制
+
+```
+function mulBase(num, base){
+	var s = new Stack();
+	do = {
+		s.push(num % base);
+		num = Method.floor(number /= base);
+	}while( num >0 )
+	var converted = '';
+	while.(s.length() > 0){
+	converted += s.pop;
+	return conve
+}
+}
+
+```
+实例2: 判断规定字符串是否是回文
+
+```
+function isPalinddrome(word){
+	var s = new Stack();
+	for(var = 0;i <  word.length; i++){
+		s.push(word[i])
+	}
+	var rword = '';
+	while(s.length() > 0){
+		rword += s.pop;
+	}
+	if(word == reword){
+		return truel
+	}else{
+		return false;
+	}
+}
+
+```
+
+实例3： 递归演示
+```
+// 原递归, 计算任何数字的阶乘
+function factorial(n){
+	if(n === 0){
+		return 0;
+	}else{
+		return n * factorial(n-1)
+	}
+}
+
+// 栈模拟
+function fact(n) {
+	var s = new Stack();
+	while( n > 1 ){
+		s.push(n--);
+	}
+	var product = 1;
+	while( s.length() > 1 ){
+		product *= s.pop();
+	}
+	return product;
+}
+
+```
+# 队列
+
+对列表的操作主要有两种：
+1. 向队列中插入新元素和删除队列中的元素，插入叫做入队，删除叫做出队
+2. 读取队头元素（peek）
+
+```
+function Queue(){
+	this.dataStore = [];
+	this.enqueue = enqueue;
+	this.dequeue = dequeue;
+	this.front = front;
+	this.back = back;
+	this.toString = toString;
+	this.empty = empty;
+}
+
+function enquequ(element){
+	this.dataStore.push(element);
+}
+
+function dequeue(){
+	return this.dataStore.shift;
+}
+
+function front(){
+	return this.dataStore[0]
+}
+
+function back(){
+	return this.dataStore[this.dataStore.length - 1]
+}
+
+function toString(){
+	...打印所有结果
+}
+
+```
+实例1：
+
+```
+
+```
+
+
+
+
+
 
